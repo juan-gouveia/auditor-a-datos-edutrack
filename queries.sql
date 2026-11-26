@@ -139,3 +139,132 @@ SELECT category, SUM(monthly_fee_paid) AS ingresos_totales
 FROM public.enrollments
 GROUP BY category
 ORDER BY ingresos_totales DESC;
+
+
+-- Auditoría de Datos en EduTrack — Tablas Relacionadas
+
+
+-- Q13: Inscripciones con nombre completo, curso y porcentage completado
+
+SELECT
+  public.students.name,
+  public.courses.title,
+  public.enrollments.completion_percentage
+FROM public.enrollments
+INNER JOIN public.students
+  ON public.enrollments.student_id = public.students.id
+INNER JOIN public.courses
+  ON public.enrollments.course_id = public.courses.id;
+
+
+-- Q14: Nombre y email de estudiantes con al menos un curso aprobado, junto con el título de dicho curso
+
+SELECT
+  public.students.name,
+  public.students.email,
+  public.courses.title
+FROM public.students
+INNER JOIN public.enrollments
+  ON public.students.id = public.enrollments.student_id
+INNER JOIN public.courses
+  ON public.enrollments.course_id = public.courses.id
+WHERE public.enrollments.passed = TRUE;
+
+
+-- Q15: Calcular porcentaje de completado medio por instructor, ordenado de mayor a menor
+
+SELECT
+  public.courses.instructor_name,
+  AVG(public.enrollments.completion_percentage)
+FROM public.courses
+INNER JOIN public.enrollments
+  ON public.courses.id = public.enrollments.course_id
+GROUP BY public.courses.instructor_name
+ORDER BY AVG(public.enrollments.completion_percentage) DESC;
+
+
+-- Q16: Encontrar todos los estudiantes que **no tienen ninguna inscripción**
+
+SELECT
+  public.students.name,
+  public.students.email
+FROM public.students
+LEFT JOIN public.enrollments
+  ON public.students.id = public.enrollments.student_id
+WHERE public.enrollments.student_id IS NULL;
+
+
+-- Q17: Encontrar todos los cursos que **no tienen ninguna inscripción**
+
+SELECT
+  public.courses.id,
+  public.courses.title
+FROM public.courses
+LEFT JOIN public.enrollments
+  ON public.courses.id = public.enrollments.course_id
+WHERE public.enrollments.course_id IS NULL;
+
+
+-- Q18: Contar cuantos cursos tiene inscrito cada estudiante, mostrando solo los estudiantes con más de un curso inscrito
+
+SELECT
+  public.students.id,
+  public.students.name,
+  COUNT(DISTINCT public.enrollments.course_id)
+FROM public.students
+INNER JOIN public.enrollments
+  ON public.students.id = public.enrollments.student_id
+GROUP BY public.students.id, public.students.name
+HAVING COUNT(DISTINCT public.enrollments.course_id) > 1;
+
+
+-- Q19: Calcular ingresos totales por categoría usando monthly_fee, no el histórico de enrollments
+
+SELECT
+  public.courses.category,
+  SUM(public.courses.monthly_fee) AS ingresos_mensuales
+FROM public.courses
+INNER JOIN public.enrollments
+  ON public.courses.id = public.enrollments.course_id
+GROUP BY public.courses.category;
+
+
+-- Q20: Mostrar cada instructor junto con el número de estudiantes inscritos en sus cursos
+
+-- Esta solución cuenta a cada estudiante una sola vez por instructor, aunque esté inscrito en varios de sus cursos.
+SELECT
+  public.courses.instructor_name,
+  COUNT(DISTINCT public.enrollments.student_id) AS estudiantes_inscritos
+FROM public.courses
+LEFT JOIN public.enrollments
+  ON public.courses.id = public.enrollments.course_id
+WHERE public.courses.instructor_name IS NOT NULL
+GROUP BY public.courses.instructor_name;
+
+-- Esta solución cuanta a cada estudiante en cada curso, sin importar si se repite en dos o más.
+SELECT
+  public.courses.instructor_name,
+  COUNT(public.enrollments.student_id) AS estudiantes_inscritos
+FROM public.courses
+LEFT JOIN public.enrollments
+  ON public.courses.id = public.enrollments.course_id
+WHERE public.courses.instructor_name IS NOT NULL
+GROUP BY public.courses.instructor_name;
+
+
+-- Q21: Comprobar la existencia de inscripciones cuyo student_id no corresponda a ningún estudiante existente
+
+SELECT public.enrollments.id AS enrollment_id, public.enrollments.student_id
+FROM public.enrollments
+LEFT JOIN public.students
+  ON public.enrollments.student_id = public.students.id
+WHERE public.students.id IS NULL;
+
+
+-- Q22: Comprobar la existencia de inscripciones cuyo course_id no corresponda a un curso existente
+
+SELECT public.enrollments.id AS enrollment_id, public.enrollments.course_id
+FROM public.enrollments
+LEFT JOIN public.courses
+  ON public.enrollments.course_id = public.courses.id
+WHERE public.courses.id IS NULL;
