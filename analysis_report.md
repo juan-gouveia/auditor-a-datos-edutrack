@@ -118,3 +118,116 @@ Success. No rows returned
 | Marketing   | 59.98            |
 
 
+# Auditoría de Datos en EduTrack — Tablas Relacionadas
+
+
+## Q13: Inscripciones con nombre completo, curso y porcentage completado
+
+| name            | title                  | completion_percentage |
+| --------------- | ---------------------- | --------------------- |
+| Emily Watson    | Intro to Python        | 85                    |
+| Emily Watson    | Web Design Basics      | 60                    |
+| Klaus Weber     | Intro to Python        | 92                    |
+| Klaus Weber     | Data Analysis with SQL | 78                    |
+| Lucia Fernandes | Web Design Basics      | 5                     |
+| Lucia Fernandes | Digital Marketing 101  | 3                     |
+| Marco Rossi     | Advanced Python        | 95                    |
+| Marco Rossi     | Intro to Python        | 88                    |
+| Yuki Nakamura   | Data Analysis with SQL | 45                    |
+| Yuki Nakamura   | UI/UX Fundamentals     | 0                     |
+| Pierre Dubois   | UI/UX Fundamentals     | 0                     |
+| Priya Sharma    | Digital Marketing 101  | 70                    |
+| Priya Sharma    | Intro to Python        | 55                    |
+| Pierre Dubois   | Data Analysis with SQL | 20                    |
+| Emily Watson    | Advanced Python        | 40                    |
+| Lucia Fernandes | Advanced Python        | 0                     |
+
+
+## Q14: Nombre y email de estudiantes con al menos un curso aprobado, junto con el título de dicho curso
+
+| name         | email                             | title                  |
+| ------------ | --------------------------------- | ---------------------- |
+| Emily Watson | emily.watson@student.edutrack.com | Intro to Python        |
+| Klaus Weber  | klaus.weber@student.edutrack.com  | Intro to Python        |
+| Klaus Weber  | klaus.weber@student.edutrack.com  | Data Analysis with SQL |
+| Marco Rossi  | marco.rossi@student.edutrack.com  | Advanced Python        |
+| Marco Rossi  | marco.rossi@student.edutrack.com  | Intro to Python        |
+| Priya Sharma | priya.sharma@student.edutrack.com | Digital Marketing 101  |
+
+
+## Q15: Calcular porcentaje de completado medio por instructor, ordenado de mayor a menor
+
+| instructor_name    | avg                    |
+| ------------------ | ---------------------- |
+| Marta López        | 66.1428571428571429    |
+| Carlos Vega        | 40.0000000000000000    |
+| Lucia Prades       | 36.5000000000000000    |
+| Pending assignment | 0.00000000000000000000 |
+
+
+## Q16: Encontrar todos los estudiantes que **no tienen ninguna inscripción**
+
+| name          | email                              |
+| ------------- | ---------------------------------- |
+| Giulia Romano | giulia.romano@student.edutrack.com |
+
+
+## Q17: Encontrar todos los cursos que **no tienen ninguna inscripción**
+
+| id | title           |
+| -- | --------------- |
+| 7  | Email Campaigns |
+
+
+## Q18: Contar cuantos cursos tiene inscrito cada estudiante, mostrando solo los estudiantes con más de un curso inscrito
+
+| id | name            | count |
+| -- | --------------- | ----- |
+| 1  | Emily Watson    | 3     |
+| 2  | Klaus Weber     | 2     |
+| 3  | Lucia Fernandes | 3     |
+| 4  | Marco Rossi     | 2     |
+| 5  | Yuki Nakamura   | 2     |
+| 6  | Pierre Dubois   | 2     |
+| 7  | Priya Sharma    | 2     |
+
+
+## Q19: Calcular ingresos totales por categoría usando monthly_fee, no el histórico de enrollments
+
+| category    | ingresos_mensuales |
+| ----------- | ------------------ |
+| Marketing   | 59.98              |
+| Programming | 409.93             |
+| Design      | 169.96             |
+| Data        | 179.97             |
+
+
+## Q20: Mostrar cada instructor junto con el número de estudiantes inscritos en sus cursos
+
+### Solución contando a cada estudiante una sola vez, aunque esté inscrito en varios cursos del mismo profesor:
+
+| instructor_name    | estudiantes_inscritos |
+| ------------------ | --------------------- |
+| Carlos Vega        | 3                     |
+| Lucia Prades       | 2                     |
+| Marta López        | 6                     |
+| Pending assignment | 2                     |
+
+### Solución contando todas las veces que un estudiante coincide con un profesor:
+
+| instructor_name    | estudiantes_inscritos |
+| ------------------ | --------------------- |
+| Carlos Vega        | 5                     |
+| Pending assignment | 2                     |
+| Lucia Prades       | 2                     |
+| Marta López        | 7                     |
+
+
+## Q21: Comprobar la existencia de inscripciones cuyo student_id no corresponda a ningún estudiante existente
+
+Success. No rows returned
+
+
+## Q22: Comprobar la existencia de inscripciones cuyo course_id no corresponda a un curso existente
+
+Success. No rows returned
